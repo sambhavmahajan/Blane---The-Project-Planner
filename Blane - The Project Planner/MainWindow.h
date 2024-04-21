@@ -2,7 +2,24 @@
 #include "project.h"
 #include <vector>
 #include <msclr/marshal_cppstd.h>
+#include <iostream>
+#include <algorithm>
+#include <algorithm>
+static bool Status_Status = false;
+static bool Priority_Status = false;
 static std::vector<_Task> _tasks;
+static bool compareTasksByPriorityLess(const _Task& task1, const _Task& task2) {
+	return task1.Priority < task2.Priority;
+}
+static bool compareTasksByPriorityGreat(const _Task& task1, const _Task& task2) {
+	return task1.Priority > task2.Priority;
+}
+static bool compareTasksByStatusLess(const _Task& task1, const _Task& task2) {
+	return task1.Status < task2.Status;
+}
+static bool compareTasksByStatusGreat(const _Task& task1, const _Task& task2) {
+	return task1.Status > task2.Status;
+}
 namespace BlaneTheProjectPlanner {
 
 	using namespace System;
@@ -76,6 +93,8 @@ namespace BlaneTheProjectPlanner {
 	private: System::Windows::Forms::ComboBox^ StatusChange;
 
 	private: System::Windows::Forms::Label^ label8;
+	private: System::Windows::Forms::Button^ button5;
+	private: System::Windows::Forms::Button^ button4;
 
 	protected:
 
@@ -116,6 +135,8 @@ namespace BlaneTheProjectPlanner {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->button5 = (gcnew System::Windows::Forms::Button());
+			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->StatusChange = (gcnew System::Windows::Forms::ComboBox());
@@ -343,6 +364,8 @@ namespace BlaneTheProjectPlanner {
 			// 
 			// groupBox2
 			// 
+			this->groupBox2->Controls->Add(this->button5);
+			this->groupBox2->Controls->Add(this->button4);
 			this->groupBox2->Controls->Add(this->groupBox3);
 			this->groupBox2->Controls->Add(this->textBox2);
 			this->groupBox2->Controls->Add(this->label2);
@@ -355,6 +378,30 @@ namespace BlaneTheProjectPlanner {
 			this->groupBox2->Size = System::Drawing::Size(1924, 803);
 			this->groupBox2->TabIndex = 7;
 			this->groupBox2->TabStop = false;
+			// 
+			// button5
+			// 
+			this->button5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button5->Location = System::Drawing::Point(1434, 47);
+			this->button5->Name = L"button5";
+			this->button5->Size = System::Drawing::Size(215, 35);
+			this->button5->TabIndex = 9;
+			this->button5->Text = L"Sort By Status";
+			this->button5->UseVisualStyleBackColor = true;
+			this->button5->Click += gcnew System::EventHandler(this, &MainWindow::button5_Click);
+			// 
+			// button4
+			// 
+			this->button4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button4->Location = System::Drawing::Point(1655, 47);
+			this->button4->Name = L"button4";
+			this->button4->Size = System::Drawing::Size(208, 39);
+			this->button4->TabIndex = 8;
+			this->button4->Text = L"Sort By Priority";
+			this->button4->UseVisualStyleBackColor = true;
+			this->button4->Click += gcnew System::EventHandler(this, &MainWindow::button4_Click);
 			// 
 			// groupBox3
 			// 
@@ -524,6 +571,26 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 		else _tasks[n].Status = status::NOTSTARTED;
 		refreshList();
 	}
+}
+private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+	Status_Status = !Status_Status;
+	if (Status_Status) {
+		std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusLess);
+	}
+	else {
+		std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusGreat);
+	}
+	refreshList();
+}
+private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+	Priority_Status = !Priority_Status;
+	if (Priority_Status) {
+		std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityLess);
+	}
+	else {
+		std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityGreat);
+	}
+	refreshList();
 }
 };
 }
