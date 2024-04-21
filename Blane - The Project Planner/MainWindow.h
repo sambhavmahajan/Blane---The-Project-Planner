@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
+#include <fstream>
 static bool Status_Status = false;
 static bool Priority_Status = false;
 static std::vector<_Task> _tasks;
@@ -41,7 +41,7 @@ namespace BlaneTheProjectPlanner {
 	public:
 		MainWindow(void)
 		{
-			
+
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -64,8 +64,8 @@ namespace BlaneTheProjectPlanner {
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ fileToolStripMenuItem;
 
-	private: System::Windows::Forms::ToolStripMenuItem^ openProjectToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ saveProjectToolStripMenuItem;
+
+
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ button2;
@@ -108,7 +108,7 @@ namespace BlaneTheProjectPlanner {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -121,8 +121,7 @@ namespace BlaneTheProjectPlanner {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->fileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->openProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->saveProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->newProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
@@ -152,7 +151,6 @@ namespace BlaneTheProjectPlanner {
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->newProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
@@ -192,26 +190,20 @@ namespace BlaneTheProjectPlanner {
 			// 
 			// fileToolStripMenuItem
 			// 
-			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
+			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
 				this->newProjectToolStripMenuItem,
-					this->openProjectToolStripMenuItem, this->saveProjectToolStripMenuItem, this->exitToolStripMenuItem
+					this->exitToolStripMenuItem
 			});
 			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
 			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
 			this->fileToolStripMenuItem->Text = L"File";
 			// 
-			// openProjectToolStripMenuItem
+			// newProjectToolStripMenuItem
 			// 
-			this->openProjectToolStripMenuItem->Name = L"openProjectToolStripMenuItem";
-			this->openProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			this->openProjectToolStripMenuItem->Text = L"Open Project";
-			this->openProjectToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::openProjectToolStripMenuItem_Click);
-			// 
-			// saveProjectToolStripMenuItem
-			// 
-			this->saveProjectToolStripMenuItem->Name = L"saveProjectToolStripMenuItem";
-			this->saveProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			this->saveProjectToolStripMenuItem->Text = L"Save Project";
+			this->newProjectToolStripMenuItem->Name = L"newProjectToolStripMenuItem";
+			this->newProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->newProjectToolStripMenuItem->Text = L"New Project";
+			this->newProjectToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::newProjectToolStripMenuItem_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -494,13 +486,6 @@ namespace BlaneTheProjectPlanner {
 			// 
 			this->openFileDialog1->Filter = L"All Files (*.*)|*.*";
 			// 
-			// newProjectToolStripMenuItem
-			// 
-			this->newProjectToolStripMenuItem->Name = L"newProjectToolStripMenuItem";
-			this->newProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			this->newProjectToolStripMenuItem->Text = L"New Project";
-			this->newProjectToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::newProjectToolStripMenuItem_Click);
-			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -538,7 +523,7 @@ namespace BlaneTheProjectPlanner {
 	}
 	private: void refreshList() {
 		listView1->Items->Clear();
-		for (const _Task &t : _tasks) {
+		for (const _Task& t : _tasks) {
 			ListViewItem^ itm = gcnew ListViewItem(ConvertstringToString(t.Name));
 			itm->SubItems->Add(ConvertstringToString(t.Description));
 			String^ Status;
@@ -582,135 +567,53 @@ namespace BlaneTheProjectPlanner {
 		_tasks.push_back(t);
 		refreshList();
 	}
-private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (listView1->SelectedItems->Count == 1) {
-		_tasks.erase(_tasks.begin() + listView1->Items->IndexOf(listView1->SelectedItems[0]));
-		listView1->Items->Remove(listView1->SelectedItems[0]);
-	}
-}
-private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (listView1->SelectedItems->Count == 1) {
-		int n = listView1->Items->IndexOf(listView1->SelectedItems[0]);
-		_tasks[n].Priority = priorityChange->SelectedIndex + 1;
-		if (StatusChange->SelectedIndex == 0) _tasks[n].Status = status::INPROGRESS;
-		else _tasks[n].Status = status::NOTSTARTED;
-		refreshList();
-	}
-}
-private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
-	Status_Status = !Status_Status;
-	if (Status_Status) {
-		std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusLess);
-	}
-	else {
-		std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusGreat);
-	}
-	refreshList();
-}
-private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-	Priority_Status = !Priority_Status;
-	if (Priority_Status) {
-		std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityLess);
-	}
-	else {
-		std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityGreat);
-	}
-	refreshList();
-}
-	   std::string taskToString(const _Task& task) {
-		   std::ostringstream oss;
-		   oss << "<Task>" << std::endl;
-		   oss << "Name: " << task.Name << std::endl;
-		   oss << "Description: " << task.Description << std::endl;
-		   oss << "Status: TaskStatus (" << task.Status << " for NOTSTARTED, " << (task.Status == INPROGRESS ? "1" : "0") << " for INPROGRESS)" << std::endl;
-		   oss << "Priority: " << task.Priority << std::endl;
-		   oss << "</Task>" << std::endl;
-		   return oss.str();
-	   }
-
-	   std::string tasksToString(const std::vector<_Task>& tasks) {
-		   std::ostringstream oss;
-		   for (const auto& task : tasks) {
-			   oss << taskToString(task);
-		   }
-		   return oss.str();
-	   }
-	   std::vector<_Task> parseTasks(const std::string& input) {
-		   std::vector<_Task> tasks;
-		   std::istringstream iss(input);
-		   std::string line;
-		   while (std::getline(iss, line)) {
-			   if (line.find("<Task>") != std::string::npos) {
-				   std::string name, description;
-				   int Status, priority;
-				   while (std::getline(iss, line)) {
-					   if (line.find("Name:") != std::string::npos) {
-						   name = line.substr(line.find(":") + 1);
-					   }
-					   else if (line.find("Description:") != std::string::npos) {
-						   description = line.substr(line.find(":") + 1);
-					   }
-					   else if (line.find("Status:") != std::string::npos) {
-						   Status = std::stoi(line.substr(line.find("(") + 1, line.find(")") - line.find("(") - 1));
-					   }
-					   else if (line.find("Priority:") != std::string::npos) {
-						   priority = std::stoi(line.substr(line.find(":") + 1));
-					   }
-					   else if (line.find("</Task>") != std::string::npos) {
-						   tasks.emplace_back(name, description, static_cast<status>(Status), priority);
-						   break;
-					   }
-				   }
-			   }
-		   }
-		   return tasks;
-	   }
-
-	   void saveText(const std::string& text, const std::string& filePath) {
-		   std::ofstream file(filePath);
-		   if (file.is_open()) {
-			   file << text;
-			   file.close();
-			   std::cout << "Text saved successfully to " << filePath << std::endl;
-		   }
-		   else {
-			   std::cerr << "Error: Unable to open file " << filePath << " for writing." << std::endl;
-		   }
-	   }
-
-	   std::string openText(const std::string& filePath) {
-		   std::string text;
-		   std::ifstream file(filePath);
-		   if (file.is_open()) {
-			   getline(file, text, '\0');
-			   file.close();
-			   return text;
-		   }
-		   else {
-			   std::cerr << "Error: Unable to open file " << filePath << " for reading." << std::endl;
-			   return "";
-		   }
-	   }
-	private: System::Void openProjectToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		if ((int)MessageBox::Show("Do you want to proceed without saving?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == 6) {
-			if ((int)openFileDialog1->ShowDialog() == 1) {
-				std::string path = marshal_as<std::string>(openFileDialog1->FileName);
-				std::string txt = openText(path);
-				_tasks = parseTasks(txt);
-			}
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (listView1->SelectedItems->Count == 1) {
+			_tasks.erase(_tasks.begin() + listView1->Items->IndexOf(listView1->SelectedItems[0]));
+			listView1->Items->Remove(listView1->SelectedItems[0]);
 		}
 	}
-private: System::Void newProjectToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	if ((int)MessageBox::Show("Do you want to proceed without saving?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == 6) {
-		textBox2->Text = "";
-		listView1->Items->Clear();
-		StatusChange->SelectedIndex = -1;
-		priorityChange->SelectedIndex = -1;
-		taskName->Text = "";
-		taskDescription->Text = "";
-		taskStatus->SelectedIndex = -1;
-		taskPriority->SelectedIndex = -1;
+	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (listView1->SelectedItems->Count == 1) {
+			int n = listView1->Items->IndexOf(listView1->SelectedItems[0]);
+			_tasks[n].Priority = priorityChange->SelectedIndex + 1;
+			if (StatusChange->SelectedIndex == 0) _tasks[n].Status = status::INPROGRESS;
+			else _tasks[n].Status = status::NOTSTARTED;
+			refreshList();
+		}
 	}
-}
-};
+	private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+		Status_Status = !Status_Status;
+		if (Status_Status) {
+			std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusLess);
+		}
+		else {
+			std::sort(_tasks.begin(), _tasks.end(), compareTasksByStatusGreat);
+		}
+		refreshList();
+	}
+	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+		Priority_Status = !Priority_Status;
+		if (Priority_Status) {
+			std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityLess);
+		}
+		else {
+			std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityGreat);
+		}
+		refreshList();
+	}
+	private: System::Void newProjectToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		if ((int)MessageBox::Show("Do you want to proceed without saving?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == 6) {
+			_tasks.clear();
+			textBox2->Text = "";
+			listView1->Items->Clear();
+			StatusChange->SelectedIndex = -1;
+			priorityChange->SelectedIndex = -1;
+			taskName->Text = "";
+			taskDescription->Text = "";
+			taskStatus->SelectedIndex = -1;
+			taskPriority->SelectedIndex = -1;
+		}
+	}
+	};
 }
