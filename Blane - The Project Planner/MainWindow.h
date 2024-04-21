@@ -1,0 +1,395 @@
+#pragma once
+#include "project.h"
+#include <vector>
+#include <msclr/marshal_cppstd.h>
+static std::vector<_Task> _tasks;
+namespace BlaneTheProjectPlanner {
+
+	using namespace System;
+	using namespace System::ComponentModel;
+	using namespace System::Collections;
+	using namespace System::Windows::Forms;
+	using namespace System::Data;
+	using namespace System::Drawing;
+
+	/// <summary>
+	/// Summary for MainWindow
+	/// </summary>
+	public ref class MainWindow : public System::Windows::Forms::Form
+	{
+	public:
+		MainWindow(void)
+		{
+			
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
+
+	protected:
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		~MainWindow()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::MenuStrip^ menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^ fileToolStripMenuItem;
+
+	private: System::Windows::Forms::ToolStripMenuItem^ openProjectToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ saveProjectToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::ListView^ listView1;
+	private: System::Windows::Forms::GroupBox^ groupBox1;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::ComboBox^ taskStatus;
+
+	private: System::Windows::Forms::RichTextBox^ taskDescription;
+
+	private: System::Windows::Forms::TextBox^ taskName;
+
+	private: System::Windows::Forms::GroupBox^ groupBox2;
+	private: System::Windows::Forms::TextBox^ textBox2;
+	private: System::Windows::Forms::ComboBox^ taskPriority;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader1;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader2;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader3;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader4;
+
+	protected:
+
+	private:
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		System::ComponentModel::Container ^components;
+
+#pragma region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		void InitializeComponent(void)
+		{
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->fileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->openProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->saveProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->listView1 = (gcnew System::Windows::Forms::ListView());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->taskPriority = (gcnew System::Windows::Forms::ComboBox());
+			this->taskStatus = (gcnew System::Windows::Forms::ComboBox());
+			this->taskDescription = (gcnew System::Windows::Forms::RichTextBox());
+			this->taskName = (gcnew System::Windows::Forms::TextBox());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
+			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader3 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader4 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->menuStrip1->SuspendLayout();
+			this->groupBox1->SuspendLayout();
+			this->groupBox2->SuspendLayout();
+			this->SuspendLayout();
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(799, 55);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(367, 37);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"Blane - Project Planner";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(15, 85);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(160, 25);
+			this->label2->TabIndex = 1;
+			this->label2->Text = L"Project Name:";
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fileToolStripMenuItem });
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(1924, 24);
+			this->menuStrip1->TabIndex = 2;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// fileToolStripMenuItem
+			// 
+			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->openProjectToolStripMenuItem,
+					this->saveProjectToolStripMenuItem, this->exitToolStripMenuItem
+			});
+			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
+			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
+			this->fileToolStripMenuItem->Text = L"File";
+			// 
+			// openProjectToolStripMenuItem
+			// 
+			this->openProjectToolStripMenuItem->Name = L"openProjectToolStripMenuItem";
+			this->openProjectToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->openProjectToolStripMenuItem->Text = L"Open Project";
+			// 
+			// saveProjectToolStripMenuItem
+			// 
+			this->saveProjectToolStripMenuItem->Name = L"saveProjectToolStripMenuItem";
+			this->saveProjectToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->saveProjectToolStripMenuItem->Text = L"Save Project";
+			// 
+			// exitToolStripMenuItem
+			// 
+			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->exitToolStripMenuItem->Text = L"Exit";
+			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::exitToolStripMenuItem_Click);
+			// 
+			// button1
+			// 
+			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button1->Location = System::Drawing::Point(1808, 204);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(95, 36);
+			this->button1->TabIndex = 3;
+			this->button1->Text = L"Add Task";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MainWindow::button1_Click);
+			// 
+			// button2
+			// 
+			this->button2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button2->Location = System::Drawing::Point(1655, 690);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(209, 34);
+			this->button2->TabIndex = 4;
+			this->button2->Text = L"Remove Task";
+			this->button2->UseVisualStyleBackColor = true;
+			// 
+			// listView1
+			// 
+			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
+				this->columnHeader1, this->columnHeader2,
+					this->columnHeader3, this->columnHeader4
+			});
+			this->listView1->HideSelection = false;
+			this->listView1->Location = System::Drawing::Point(33, 126);
+			this->listView1->Name = L"listView1";
+			this->listView1->Size = System::Drawing::Size(1831, 558);
+			this->listView1->TabIndex = 5;
+			this->listView1->UseCompatibleStateImageBehavior = false;
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->taskPriority);
+			this->groupBox1->Controls->Add(this->taskStatus);
+			this->groupBox1->Controls->Add(this->taskDescription);
+			this->groupBox1->Controls->Add(this->taskName);
+			this->groupBox1->Controls->Add(this->label6);
+			this->groupBox1->Controls->Add(this->label5);
+			this->groupBox1->Controls->Add(this->label4);
+			this->groupBox1->Controls->Add(this->label3);
+			this->groupBox1->Controls->Add(this->button1);
+			this->groupBox1->Dock = System::Windows::Forms::DockStyle::Bottom;
+			this->groupBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->groupBox1->Location = System::Drawing::Point(0, 809);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(1924, 252);
+			this->groupBox1->TabIndex = 6;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"New Task";
+			// 
+			// taskPriority
+			// 
+			this->taskPriority->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->taskPriority->FormattingEnabled = true;
+			this->taskPriority->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"1", L"2", L"3", L"4", L"5" });
+			this->taskPriority->Location = System::Drawing::Point(274, 201);
+			this->taskPriority->Name = L"taskPriority";
+			this->taskPriority->Size = System::Drawing::Size(1452, 28);
+			this->taskPriority->TabIndex = 11;
+			// 
+			// taskStatus
+			// 
+			this->taskStatus->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->taskStatus->FormattingEnabled = true;
+			this->taskStatus->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"In Progress", L"Not Started" });
+			this->taskStatus->Location = System::Drawing::Point(128, 157);
+			this->taskStatus->Name = L"taskStatus";
+			this->taskStatus->Size = System::Drawing::Size(1598, 28);
+			this->taskStatus->TabIndex = 10;
+			// 
+			// taskDescription
+			// 
+			this->taskDescription->Location = System::Drawing::Point(128, 69);
+			this->taskDescription->Name = L"taskDescription";
+			this->taskDescription->Size = System::Drawing::Size(1598, 81);
+			this->taskDescription->TabIndex = 9;
+			this->taskDescription->Text = L"";
+			// 
+			// taskName
+			// 
+			this->taskName->Location = System::Drawing::Point(128, 37);
+			this->taskName->Name = L"taskName";
+			this->taskName->Size = System::Drawing::Size(1598, 26);
+			this->taskName->TabIndex = 8;
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(29, 204);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(239, 20);
+			this->label6->TabIndex = 7;
+			this->label6->Text = L"Priority(1 being high, 5 being low)";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(29, 165);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(56, 20);
+			this->label5->TabIndex = 6;
+			this->label5->Text = L"Status";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(29, 74);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(93, 20);
+			this->label4->TabIndex = 5;
+			this->label4->Text = L"Description:";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(29, 37);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(93, 20);
+			this->label3->TabIndex = 4;
+			this->label3->Text = L"Task Name:";
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->textBox2);
+			this->groupBox2->Controls->Add(this->label2);
+			this->groupBox2->Controls->Add(this->button2);
+			this->groupBox2->Controls->Add(this->listView1);
+			this->groupBox2->Controls->Add(this->label1);
+			this->groupBox2->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->groupBox2->Location = System::Drawing::Point(0, 24);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(1924, 785);
+			this->groupBox2->TabIndex = 7;
+			this->groupBox2->TabStop = false;
+			// 
+			// textBox2
+			// 
+			this->textBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->textBox2->Location = System::Drawing::Point(181, 82);
+			this->textBox2->Name = L"textBox2";
+			this->textBox2->Size = System::Drawing::Size(390, 31);
+			this->textBox2->TabIndex = 6;
+			// 
+			// columnHeader1
+			// 
+			this->columnHeader1->Text = L"Task Name";
+			// 
+			// columnHeader2
+			// 
+			this->columnHeader2->Text = L"Description";
+			// 
+			// columnHeader3
+			// 
+			this->columnHeader3->Text = L"Status";
+			// 
+			// columnHeader4
+			// 
+			this->columnHeader4->Text = L"Priority";
+			// 
+			// MainWindow
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->ClientSize = System::Drawing::Size(1924, 1061);
+			this->Controls->Add(this->groupBox2);
+			this->Controls->Add(this->groupBox1);
+			this->Controls->Add(this->menuStrip1);
+			this->MainMenuStrip = this->menuStrip1;
+			this->Name = L"MainWindow";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+			this->Text = L"Blane - The Project Planner";
+			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
+			this->ResumeLayout(false);
+			this->PerformLayout();
+
+		}
+#pragma endregion
+	private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Close();
+	}
+	private:std::string ConvertStringToString(String^ managedString) {
+		return msclr::interop::marshal_as<std::string>(managedString);
+	}
+	private: void refreshList() {
+		listView1->Clear();
+		for (const _Task &t : _tasks) {
+			std::string s = "";
+			
+		}
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		std::string name = ConvertStringToString(taskName->Text->ToString());
+		std::string description = ConvertStringToString(taskDescription->Text->ToString());
+		status st;
+		if (taskStatus->Text == "In Progress") {
+			st = status::INPROGRESS;
+		}
+		else {
+			st = status::NOTSTARTED;
+		}
+		int priority = stoi(ConvertStringToString(taskPriority->Text->ToString()));
+		_Task t(name, description, st, priority);
+		_tasks.push_back(t);
+	}
+};
+}
