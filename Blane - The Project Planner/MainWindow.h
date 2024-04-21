@@ -11,6 +11,7 @@ namespace BlaneTheProjectPlanner {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace msclr::interop;
 
 	/// <summary>
 	/// Summary for MainWindow
@@ -67,6 +68,14 @@ namespace BlaneTheProjectPlanner {
 	private: System::Windows::Forms::ColumnHeader^ columnHeader2;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader3;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader4;
+	private: System::Windows::Forms::GroupBox^ groupBox3;
+	private: System::Windows::Forms::ComboBox^ priorityChange;
+
+	private: System::Windows::Forms::Label^ label7;
+	private: System::Windows::Forms::Button^ button3;
+	private: System::Windows::Forms::ComboBox^ StatusChange;
+
+	private: System::Windows::Forms::Label^ label8;
 
 	protected:
 
@@ -93,6 +102,10 @@ namespace BlaneTheProjectPlanner {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
+			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader3 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader4 = (gcnew System::Windows::Forms::ColumnHeader());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->taskPriority = (gcnew System::Windows::Forms::ComboBox());
 			this->taskStatus = (gcnew System::Windows::Forms::ComboBox());
@@ -103,14 +116,17 @@ namespace BlaneTheProjectPlanner {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->StatusChange = (gcnew System::Windows::Forms::ComboBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->priorityChange = (gcnew System::Windows::Forms::ComboBox());
+			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
-			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
-			this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
-			this->columnHeader3 = (gcnew System::Windows::Forms::ColumnHeader());
-			this->columnHeader4 = (gcnew System::Windows::Forms::ColumnHeader());
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -127,11 +143,11 @@ namespace BlaneTheProjectPlanner {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(15, 85);
+			this->label2->Location = System::Drawing::Point(28, 61);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(160, 25);
+			this->label2->Size = System::Drawing::Size(147, 25);
 			this->label2->TabIndex = 1;
 			this->label2->Text = L"Project Name:";
 			// 
@@ -177,7 +193,7 @@ namespace BlaneTheProjectPlanner {
 			// 
 			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->button1->Location = System::Drawing::Point(1808, 204);
+			this->button1->Location = System::Drawing::Point(1788, 193);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(95, 36);
 			this->button1->TabIndex = 3;
@@ -189,12 +205,13 @@ namespace BlaneTheProjectPlanner {
 			// 
 			this->button2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->button2->Location = System::Drawing::Point(1655, 690);
+			this->button2->Location = System::Drawing::Point(1655, 594);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(209, 34);
 			this->button2->TabIndex = 4;
 			this->button2->Text = L"Remove Task";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MainWindow::button2_Click);
 			// 
 			// listView1
 			// 
@@ -202,12 +219,35 @@ namespace BlaneTheProjectPlanner {
 				this->columnHeader1, this->columnHeader2,
 					this->columnHeader3, this->columnHeader4
 			});
+			this->listView1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
 			this->listView1->HideSelection = false;
-			this->listView1->Location = System::Drawing::Point(33, 126);
+			this->listView1->Location = System::Drawing::Point(33, 95);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1831, 558);
+			this->listView1->Size = System::Drawing::Size(1831, 475);
 			this->listView1->TabIndex = 5;
 			this->listView1->UseCompatibleStateImageBehavior = false;
+			this->listView1->View = System::Windows::Forms::View::Details;
+			// 
+			// columnHeader1
+			// 
+			this->columnHeader1->Text = L"Task Name";
+			this->columnHeader1->Width = 400;
+			// 
+			// columnHeader2
+			// 
+			this->columnHeader2->Text = L"Description";
+			this->columnHeader2->Width = 1000;
+			// 
+			// columnHeader3
+			// 
+			this->columnHeader3->Text = L"Status";
+			this->columnHeader3->Width = 300;
+			// 
+			// columnHeader4
+			// 
+			this->columnHeader4->Text = L"Priority";
+			this->columnHeader4->Width = 220;
 			// 
 			// groupBox1
 			// 
@@ -223,9 +263,9 @@ namespace BlaneTheProjectPlanner {
 			this->groupBox1->Dock = System::Windows::Forms::DockStyle::Bottom;
 			this->groupBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->groupBox1->Location = System::Drawing::Point(0, 809);
+			this->groupBox1->Location = System::Drawing::Point(0, 827);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(1924, 252);
+			this->groupBox1->Size = System::Drawing::Size(1924, 234);
 			this->groupBox1->TabIndex = 6;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"New Task";
@@ -303,6 +343,7 @@ namespace BlaneTheProjectPlanner {
 			// 
 			// groupBox2
 			// 
+			this->groupBox2->Controls->Add(this->groupBox3);
 			this->groupBox2->Controls->Add(this->textBox2);
 			this->groupBox2->Controls->Add(this->label2);
 			this->groupBox2->Controls->Add(this->button2);
@@ -311,34 +352,82 @@ namespace BlaneTheProjectPlanner {
 			this->groupBox2->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->groupBox2->Location = System::Drawing::Point(0, 24);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(1924, 785);
+			this->groupBox2->Size = System::Drawing::Size(1924, 803);
 			this->groupBox2->TabIndex = 7;
 			this->groupBox2->TabStop = false;
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->button3);
+			this->groupBox3->Controls->Add(this->StatusChange);
+			this->groupBox3->Controls->Add(this->label8);
+			this->groupBox3->Controls->Add(this->priorityChange);
+			this->groupBox3->Controls->Add(this->label7);
+			this->groupBox3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->groupBox3->Location = System::Drawing::Point(33, 634);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(1831, 163);
+			this->groupBox3->TabIndex = 7;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Change Properties";
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(1741, 82);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(75, 29);
+			this->button3->TabIndex = 16;
+			this->button3->Text = L"Change";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MainWindow::button3_Click);
+			// 
+			// StatusChange
+			// 
+			this->StatusChange->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->StatusChange->FormattingEnabled = true;
+			this->StatusChange->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"In Progress", L"Not Started" });
+			this->StatusChange->Location = System::Drawing::Point(132, 38);
+			this->StatusChange->Name = L"StatusChange";
+			this->StatusChange->Size = System::Drawing::Size(1592, 28);
+			this->StatusChange->TabIndex = 15;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(33, 46);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(56, 20);
+			this->label8->TabIndex = 14;
+			this->label8->Text = L"Status";
+			// 
+			// priorityChange
+			// 
+			this->priorityChange->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->priorityChange->FormattingEnabled = true;
+			this->priorityChange->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"1", L"2", L"3", L"4", L"5" });
+			this->priorityChange->Location = System::Drawing::Point(272, 83);
+			this->priorityChange->Name = L"priorityChange";
+			this->priorityChange->Size = System::Drawing::Size(1452, 28);
+			this->priorityChange->TabIndex = 13;
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(27, 86);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(239, 20);
+			this->label7->TabIndex = 12;
+			this->label7->Text = L"Priority(1 being high, 5 being low)";
 			// 
 			// textBox2
 			// 
 			this->textBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox2->Location = System::Drawing::Point(181, 82);
+			this->textBox2->Location = System::Drawing::Point(194, 58);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(390, 31);
 			this->textBox2->TabIndex = 6;
-			// 
-			// columnHeader1
-			// 
-			this->columnHeader1->Text = L"Task Name";
-			// 
-			// columnHeader2
-			// 
-			this->columnHeader2->Text = L"Description";
-			// 
-			// columnHeader3
-			// 
-			this->columnHeader3->Text = L"Status";
-			// 
-			// columnHeader4
-			// 
-			this->columnHeader4->Text = L"Priority";
 			// 
 			// MainWindow
 			// 
@@ -359,6 +448,8 @@ namespace BlaneTheProjectPlanner {
 			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -367,19 +458,46 @@ namespace BlaneTheProjectPlanner {
 	private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 	}
-	private:std::string ConvertStringToString(String^ managedString) {
+	private:std::string ConvertStringTostring(String^ managedString) {
 		return msclr::interop::marshal_as<std::string>(managedString);
 	}
+	private: String^ ConvertstringToString(std::string unmanagedString) {
+		return marshal_as<String^>(unmanagedString);
+	}
 	private: void refreshList() {
-		listView1->Clear();
+		listView1->Items->Clear();
 		for (const _Task &t : _tasks) {
-			std::string s = "";
-			
+			ListViewItem^ itm = gcnew ListViewItem(ConvertstringToString(t.Name));
+			itm->SubItems->Add(ConvertstringToString(t.Description));
+			String^ Status;
+			if (t.Status == status::INPROGRESS) {
+				Status = "In Progress";
+			}
+			else {
+				Status = "Not Started";
+			}
+			String^ pr;
+			switch (t.Priority) {
+			case 1: pr = "1";
+				break;
+			case 2: pr = "2";
+				break;
+			case 3: pr = "3";
+				break;
+			case 4: pr = "4";
+				break;
+			case 5:
+				pr = "5";
+				break;
+			}
+			itm->SubItems->Add(Status);
+			itm->SubItems->Add(pr);
+			listView1->Items->Add(itm);
 		}
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string name = ConvertStringToString(taskName->Text->ToString());
-		std::string description = ConvertStringToString(taskDescription->Text->ToString());
+		std::string name = ConvertStringTostring(taskName->Text->ToString());
+		std::string description = ConvertStringTostring(taskDescription->Text->ToString());
 		status st;
 		if (taskStatus->Text == "In Progress") {
 			st = status::INPROGRESS;
@@ -387,9 +505,25 @@ namespace BlaneTheProjectPlanner {
 		else {
 			st = status::NOTSTARTED;
 		}
-		int priority = stoi(ConvertStringToString(taskPriority->Text->ToString()));
+		int priority = stoi(ConvertStringTostring(taskPriority->Text->ToString()));
 		_Task t(name, description, st, priority);
 		_tasks.push_back(t);
+		refreshList();
 	}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (listView1->SelectedItems->Count == 1) {
+		_tasks.erase(_tasks.begin() + listView1->Items->IndexOf(listView1->SelectedItems[0]));
+		listView1->Items->Remove(listView1->SelectedItems[0]);
+	}
+}
+private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (listView1->SelectedItems->Count == 1) {
+		int n = listView1->Items->IndexOf(listView1->SelectedItems[0]);
+		_tasks[n].Priority = priorityChange->SelectedIndex + 1;
+		if (StatusChange->SelectedIndex == 0) _tasks[n].Status = status::INPROGRESS;
+		else _tasks[n].Status = status::NOTSTARTED;
+		refreshList();
+	}
+}
 };
 }
