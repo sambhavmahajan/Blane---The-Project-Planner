@@ -4,7 +4,10 @@
 #include <msclr/marshal_cppstd.h>
 #include <iostream>
 #include <algorithm>
-#include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 static bool Status_Status = false;
 static bool Priority_Status = false;
 static std::vector<_Task> _tasks;
@@ -95,6 +98,9 @@ namespace BlaneTheProjectPlanner {
 	private: System::Windows::Forms::Label^ label8;
 	private: System::Windows::Forms::Button^ button5;
 	private: System::Windows::Forms::Button^ button4;
+	private: System::Windows::Forms::SaveFileDialog^ saveFileDialog1;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	private: System::Windows::Forms::ToolStripMenuItem^ newProjectToolStripMenuItem;
 
 	protected:
 
@@ -144,6 +150,9 @@ namespace BlaneTheProjectPlanner {
 			this->priorityChange = (gcnew System::Windows::Forms::ComboBox());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
+			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->newProjectToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
@@ -183,9 +192,9 @@ namespace BlaneTheProjectPlanner {
 			// 
 			// fileToolStripMenuItem
 			// 
-			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
-				this->openProjectToolStripMenuItem,
-					this->saveProjectToolStripMenuItem, this->exitToolStripMenuItem
+			this->fileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
+				this->newProjectToolStripMenuItem,
+					this->openProjectToolStripMenuItem, this->saveProjectToolStripMenuItem, this->exitToolStripMenuItem
 			});
 			this->fileToolStripMenuItem->Name = L"fileToolStripMenuItem";
 			this->fileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
@@ -194,19 +203,20 @@ namespace BlaneTheProjectPlanner {
 			// openProjectToolStripMenuItem
 			// 
 			this->openProjectToolStripMenuItem->Name = L"openProjectToolStripMenuItem";
-			this->openProjectToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->openProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->openProjectToolStripMenuItem->Text = L"Open Project";
+			this->openProjectToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::openProjectToolStripMenuItem_Click);
 			// 
 			// saveProjectToolStripMenuItem
 			// 
 			this->saveProjectToolStripMenuItem->Name = L"saveProjectToolStripMenuItem";
-			this->saveProjectToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->saveProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->saveProjectToolStripMenuItem->Text = L"Save Project";
 			// 
 			// exitToolStripMenuItem
 			// 
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(143, 22);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::exitToolStripMenuItem_Click);
 			// 
@@ -476,6 +486,21 @@ namespace BlaneTheProjectPlanner {
 			this->textBox2->Size = System::Drawing::Size(390, 31);
 			this->textBox2->TabIndex = 6;
 			// 
+			// saveFileDialog1
+			// 
+			this->saveFileDialog1->Filter = L"All Files (*.*)|*.*";
+			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->Filter = L"All Files (*.*)|*.*";
+			// 
+			// newProjectToolStripMenuItem
+			// 
+			this->newProjectToolStripMenuItem->Name = L"newProjectToolStripMenuItem";
+			this->newProjectToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->newProjectToolStripMenuItem->Text = L"New Project";
+			this->newProjectToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWindow::newProjectToolStripMenuItem_Click);
+			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -591,6 +616,101 @@ private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e
 		std::sort(_tasks.begin(), _tasks.end(), compareTasksByPriorityGreat);
 	}
 	refreshList();
+}
+	   std::string taskToString(const _Task& task) {
+		   std::ostringstream oss;
+		   oss << "<Task>" << std::endl;
+		   oss << "Name: " << task.Name << std::endl;
+		   oss << "Description: " << task.Description << std::endl;
+		   oss << "Status: TaskStatus (" << task.Status << " for NOTSTARTED, " << (task.Status == INPROGRESS ? "1" : "0") << " for INPROGRESS)" << std::endl;
+		   oss << "Priority: " << task.Priority << std::endl;
+		   oss << "</Task>" << std::endl;
+		   return oss.str();
+	   }
+
+	   std::string tasksToString(const std::vector<_Task>& tasks) {
+		   std::ostringstream oss;
+		   for (const auto& task : tasks) {
+			   oss << taskToString(task);
+		   }
+		   return oss.str();
+	   }
+	   std::vector<_Task> parseTasks(const std::string& input) {
+		   std::vector<_Task> tasks;
+		   std::istringstream iss(input);
+		   std::string line;
+		   while (std::getline(iss, line)) {
+			   if (line.find("<Task>") != std::string::npos) {
+				   std::string name, description;
+				   int Status, priority;
+				   while (std::getline(iss, line)) {
+					   if (line.find("Name:") != std::string::npos) {
+						   name = line.substr(line.find(":") + 1);
+					   }
+					   else if (line.find("Description:") != std::string::npos) {
+						   description = line.substr(line.find(":") + 1);
+					   }
+					   else if (line.find("Status:") != std::string::npos) {
+						   Status = std::stoi(line.substr(line.find("(") + 1, line.find(")") - line.find("(") - 1));
+					   }
+					   else if (line.find("Priority:") != std::string::npos) {
+						   priority = std::stoi(line.substr(line.find(":") + 1));
+					   }
+					   else if (line.find("</Task>") != std::string::npos) {
+						   tasks.emplace_back(name, description, static_cast<status>(Status), priority);
+						   break;
+					   }
+				   }
+			   }
+		   }
+		   return tasks;
+	   }
+
+	   void saveText(const std::string& text, const std::string& filePath) {
+		   std::ofstream file(filePath);
+		   if (file.is_open()) {
+			   file << text;
+			   file.close();
+			   std::cout << "Text saved successfully to " << filePath << std::endl;
+		   }
+		   else {
+			   std::cerr << "Error: Unable to open file " << filePath << " for writing." << std::endl;
+		   }
+	   }
+
+	   std::string openText(const std::string& filePath) {
+		   std::string text;
+		   std::ifstream file(filePath);
+		   if (file.is_open()) {
+			   getline(file, text, '\0');
+			   file.close();
+			   return text;
+		   }
+		   else {
+			   std::cerr << "Error: Unable to open file " << filePath << " for reading." << std::endl;
+			   return "";
+		   }
+	   }
+	private: System::Void openProjectToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		if ((int)MessageBox::Show("Do you want to proceed without saving?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == 6) {
+			if ((int)openFileDialog1->ShowDialog() == 1) {
+				std::string path = marshal_as<std::string>(openFileDialog1->FileName);
+				std::string txt = openText(path);
+				_tasks = parseTasks(txt);
+			}
+		}
+	}
+private: System::Void newProjectToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if ((int)MessageBox::Show("Do you want to proceed without saving?", "Confirmation", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == 6) {
+		textBox2->Text = "";
+		listView1->Items->Clear();
+		StatusChange->SelectedIndex = -1;
+		priorityChange->SelectedIndex = -1;
+		taskName->Text = "";
+		taskDescription->Text = "";
+		taskStatus->SelectedIndex = -1;
+		taskPriority->SelectedIndex = -1;
+	}
 }
 };
 }
